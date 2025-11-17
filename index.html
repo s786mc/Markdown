@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تشخیص زبان مرورگر</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+      
+    font-family: 'Vazirmatn', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    
+          }
+        
+        
+        body {
+          
+            direction: rtl;
+            text-align: center;
+            background: linear-gradient(135deg, #6fc9c5 30%, #50cbde 70%);
+            color: white;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+        
+        .container {
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            max-width: 600px;
+            width: 90%;
+            position: relative;
+            z-index: 1;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        p {
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+        
+        .loader-container {
+            margin: 30px 0;
+        }
+        
+        .loader {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+            margin: 0 auto;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .language-info {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        
+        .countdown {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 15px 0;
+            color: #666;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, blue, darkblue );
+            border-radius: 5px;
+            transition: width 0.5s ease;
+        }
+        
+        .floating-shapes {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+        
+        .shape {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 15s infinite linear;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-1000px) rotate(720deg);
+                opacity: 0;
+            }
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: white;
+            color: #2575fc;
+            padding: 12px 25px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-shapes" id="shapes-container"></div>
+    
+    <div class="container">
+        <h1>در حال تشخیص زبان مرورگر شما...</h1>
+        <div class="loader-container">
+            <div class="loader"></div>
+        </div>
+        <p>لطفاً چند لحظه صبر کنید</p>
+        
+        <div class="progress-bar">
+            <div class="progress" id="progress-bar"></div>
+        </div>
+        
+        <div class="countdown" id="countdown">۱۲ ثانیه باقی مانده</div>
+        
+        <div class="language-info">
+            <p id="detected-lang">زبان شناسایی شده: در حال تشخیص...</p>
+            <p id="target-page">صفحه مقصد: در حال تعیین...</p>
+        </div>
+        
+        <a href="#" id="manual-link" class="btn" style="display: none;">رفتن به صفحه مناسب</a>
+    </div>
+
+    <script>
+        // ایجاد اشکال شناور برای جلوه بصری
+        function createFloatingShapes() {
+            const container = document.getElementById('shapes-container');
+            const colors = ['rgba(255,255,255,0.1)', 'rgba(255,255,255,0.15)', 'rgba(255,255,255,0.2)'];
+            
+            for (let i = 0; i < 15; i++) {
+                const shape = document.createElement('div');
+                shape.classList.add('shape');
+                
+                const size = Math.random() * 100 + 20;
+                shape.style.width = `${size}px`;
+                shape.style.height = `${size}px`;
+                shape.style.left = `${Math.random() * 100}%`;
+                shape.style.top = `${Math.random() * 100 + 100}%`;
+                shape.style.background = colors[Math.floor(Math.random() * colors.length)];
+                shape.style.animationDuration = `${Math.random() * 20 + 10}s`;
+                shape.style.animationDelay = `${Math.random() * 5}s`;
+                
+                container.appendChild(shape);
+            }
+        }
+        
+        // تابع تشخیص زبان مرورگر
+        function detectBrowserLanguage() {
+            // دریافت زبان مرورگر
+            const browserLang = navigator.language || navigator.userLanguage;
+            const detectedLangElement = document.getElementById('detected-lang');
+            const targetPageElement = document.getElementById('target-page');
+            
+            detectedLangElement.textContent = `زبان شناسایی شده: ${browserLang}`;
+            
+            let targetPage = '';
+            
+            // بررسی زبان و تعیین صفحه مقصد
+            if (browserLang.startsWith('fa')) {
+                // زبان فارسی
+                targetPage = './lang-md/Parsi.html';
+                targetPageElement.textContent = 'صفحه مقصد: صفحه فارسی';
+            } else {
+                // سایر زبان‌ها
+                targetPage = './lang-md/English.html';
+                targetPageElement.textContent = 'صفحه مقصد: صفحه انگلیسی';
+            }
+            
+            return targetPage;
+        }
+        
+        // تابع شمارش معکوس
+        function startCountdown(targetPage) {
+            let seconds = 12;
+            const countdownElement = document.getElementById('countdown');
+            const progressBar = document.getElementById('progress-bar');
+            
+            const countdownInterval = setInterval(() => {
+                seconds--;
+                countdownElement.textContent = `${seconds} ثانیه باقی مانده`;
+                
+                // به روز رسانی نوار پیشرفت
+                const progress = ((12 - seconds) / 12) * 100;
+                progressBar.style.width = `${progress}%`;
+                
+                if (seconds <= 0) {
+                    clearInterval(countdownInterval);
+                    // هدایت به صفحه مقصد
+                    window.location.href = targetPage;
+                }
+            }, 1000);
+        }
+        
+        // اجرای کدها پس از بارگذاری صفحه
+        document.addEventListener('DOMContentLoaded', function() {
+            createFloatingShapes();
+            
+            // تشخیص زبان
+            const targetPage = detectBrowserLanguage();
+            
+            // شروع شمارش معکوس ۱۲ ثانیه‌ای
+            startCountdown(targetPage);
+        });
+    </script>
+</body>
+</html>
