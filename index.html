@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تشخیص زبان مرورگر</title>
+    <title>Loading ......</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap" rel="stylesheet">
@@ -215,11 +215,11 @@
             // بررسی زبان و تعیین صفحه مقصد
             if (browserLang.startsWith('fa')) {
                 // زبان فارسی
-                targetPage = './lang-md/Parsi.html';
+                targetPage = './lang/Parsi.html';
                 targetPageElement.textContent = 'صفحه مقصد: صفحه فارسی';
             } else {
                 // سایر زبان‌ها
-                targetPage = './lang-md/English.html';
+                targetPage = './lang/English.html';
                 targetPageElement.textContent = 'صفحه مقصد: صفحه انگلیسی';
             }
             
