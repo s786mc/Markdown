@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Markdown Language Tutorial</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; font-family: 'Vazirmatn','Segoe UI',Tahoma,Geneva,Verdana,sans-serif; }
+        :root {
+            --primary:#3498db; --secondary:#2c3e50; --accent:#e74c3c;
+            --light:#ecf0f1; --dark:#2c3e50; --success:#2ecc71;
+            --warning:#f39c12; --info:#17a2b8;
+        }
+        body { background-color:#f5f7fa; color:#333; line-height:1.6; }
+        header { background:linear-gradient(135deg,var(--secondary),var(--primary)); color:white; padding:2rem 1rem; text-align:center; box-shadow:0 4px 12px rgba(0,0,0,0.1); }
+        header h1 { font-size:2.5rem; margin-bottom:.5rem; }
+        header p { font-size:1.2rem; max-width:800px; margin:0 auto; }
+        .container { max-width:1200px; margin:0 auto; padding:2rem 1rem; }
+        .intro, .advanced-section, .cheatsheet, .try-it {
+            background:white; border-radius:10px; padding:2rem; margin-bottom:2rem; box-shadow:0 4px 6px rgba(0,0,0,0.05);
+        }
+        .intro h2, .advanced-section h2, .cheatsheet h2 { color:var(--primary); margin-bottom:1rem; }
+        .content-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:2rem; margin-bottom:2rem; }
+        .card { background:white; border-radius:10px; overflow:hidden; box-shadow:0 4px 6px rgba(0,0,0,0.05); transition:.3s; }
+        .card:hover { transform:translateY(-5px); box-shadow:0 10px 20px rgba(0,0,0,0.1); }
+        .card-header { background:var(--primary); color:white; padding:1rem 1.5rem; display:flex; align-items:center; gap:10px; }
+        .card-body{ padding:1.5rem; }
+        .example-container{ display:flex; flex-direction:column; gap:1rem; margin-top:1rem; }
+        .example{ background:var(--light); padding:1rem; border-radius:5px; border-right:3px solid var(--primary);}
+        .markdown-input,.html-output{ background:#f8f9fa; padding:1rem; border-radius:5px; font-family:'Courier New',monospace; white-space:pre-wrap; border:1px solid #e1e5e9; }
+        .markdown-input{ border-left:4px solid var(--primary); }
+        .html-output{ border-left:4px solid var(--success); }
+        textarea{ width:100%; min-height:300px; padding:1rem; border:1px solid #ddd; border-radius:5px; resize:vertical; font-family:'Courier New',monospace; }
+        .preview{ min-height:300px; padding:1rem; border:1px solid #ddd; border-radius:5px; background:#f8f9fa; }
+        .btn{ background:var(--primary); color:white; padding:.75rem 1.5rem; border:none; border-radius:5px; cursor:pointer; font-size:1rem; transition:.3s; margin-top:1rem; }
+        .btn:hover{ background:#2980b9; }
+        .cheatsheet-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:1.5rem; }
+        .cheat-item{ background:var(--light); padding:1rem; border-radius:8px; border-right:4px solid var(--info); }
+        footer{ background:var(--secondary); color:white; text-align:center; padding:2rem 1rem; margin-top:3rem; }
+        .note{ background:#fff9e6; padding:1rem; border-radius:5px; border-right:4px solid var(--warning); margin:1rem 0; }
+    </style>
+</head>
+
+<body>
+<header>
+<h1><i class="fas fa-markdown"></i> Complete Markdown Language Tutorial</h1>
+<p>Learn everything about Markdown <br>- From Beginner to Advanced</p>
+<a href="../v-english.html" class="btn"> Markdown Code Viewer </a>
+</header>
+
+<div class="container">
+
+<section class="intro">
+<h2>What is Markdown?</h2>
+<p>Markdown is a lightweight and readable markup language that easily converts to HTML. It was created by John Gruber and Aaron Swartz in 2004 and is widely used today in documentation, README files, forums, and content management systems.</p>
+<p>On this page, you will learn all aspects of Markdown completely with multiple examples.</p>
+</section>
+
+<div class="content-grid">
+
+<div class="card">
+<div class="card-header"><i class="fas fa-heading"></i><h3>Headings</h3></div>
+<div class="card-body">
+<p>Use # to create headings. The number of # determines the heading level.</p>
+<div class="example-container">
+<div class="example"><div class="example-title">Markdown:</div>
+<div class="markdown-input"># Level 1
+## Level 2
+### Level 3
+#### Level 4
+##### Level 5
+###### Level 6
+</div></div>
+<div class="example"><div class="example-title">HTML Output:</div>
+<div class="html-output">&lt;h1&gt;Level 1&lt;/h1&gt;
+&lt;h2&gt;Level 2&lt;/h2&gt;
+&lt;h3&gt;Level 3&lt;/h3&gt;
+&lt;h4&gt;Level 4&lt;/h4&gt;
+&lt;h5&gt;Level 5&lt;/h5&gt;
+&lt;h6&gt;Level 6&lt;/h6&gt;</div></div>
+</div></div></div>
+
+<div class="card">
+<div class="card-header"><i class="fas fa-bold"></i><h3>Text Formatting</h3></div>
+<div class="card-body">
+<p>Use these symbols to create bold, italic, and strikethrough text.</p>
+<div class="example-container">
+<div class="example"><div class="example-title">Markdown:</div>
+<div class="markdown-input">**Bold Text**
+__Bold Text__
+*Italic*
+_Italic_
+~~Strikethrough~~</div></div>
+<div class="example"><div class="example-title">HTML Output:</div>
+<div class="html-output">&lt;strong&gt;Bold Text&lt;/strong&gt;
+&lt;strong&gt;Bold Text&lt;/strong&gt;
+&lt;em&gt;Italic&lt;/em&gt;
+&lt;em&gt;Italic&lt;/em&gt;
+&lt;del&gt;Strikethrough&lt;/del&gt;</div></div>
+</div></div></div>
+
+<div class="card">
+<div class="card-header"><i class="fas fa-list"></i><h3>Lists</h3></div>
+<div class="card-body">
+<p>Ordered and unordered lists in Markdown.</p>
+<div class="example-container">
+<div class="example"><div class="example-title">Markdown:</div>
+<div class="markdown-input">- List item 1
+- List item 2
+  - Sub item 1
+  - Sub item 2
+- List item 3
+
+1. First
+2. Second
+3. Third
+</div></div>
+<div class="example"><div class="example-title">HTML Output:</div>
+<div class="html-output">&lt;ul&gt;
+  &lt;li&gt;List item 1&lt;/li&gt;
+  &lt;li&gt;List item 2
+    &lt;ul&gt;
+      &lt;li&gt;Sub item 1&lt;/li&gt;
+      &lt;li&gt;Sub item 2&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;List item 3&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;First&lt;/li&gt;
+  &lt;li&gt;Second&lt;/li&gt;
+  &lt;li&gt;Third&lt;/li&gt;
+&lt;/ol&gt;</div></div>
+</div></div></div>
+
+<div class="card">
+<div class="card-header"><i class="fas fa-link"></i><h3>Links & Images</h3></div>
+<div class="card-body">
+<p>How to add links and images.</p>
+<div class="example-container">
+<div class="example">
+<div class="example-title">Markdown:</div>
+<div class="markdown-input">[Link Text](https://example.com)
+![Image Alt](image.jpg)</div>
+</div>
+
+<div class="example">
+<div class="example-title">HTML Output:</div>
+<div class="html-output">
+&lt;a href="https://example.com"&gt;Link Text&lt;/a&gt;
+&lt;img src="image.jpg" alt="Image Alt"&gt;</div></div>
+</div></div></div>
+
+<div class="card">
+<div class="card-header"><i class="fas fa-code"></i><h3>Code Formatting</h3></div>
+<div class="card-body">
+<p>Display inline code or code blocks.</p>
+<div class="example-container">
+<div class="example"><div class="example-title">Markdown:</div>
+<div class="markdown-input">Inline: `console.log('Hi')`
+
+```javascript
+function test() {
+ console.log("Hello");
+}
+```</div></div>
+
+<div class="example"><div class="example-title">HTML Output:</div>
+<div class="html-output">Inline: &lt;code&gt;console.log('Hi')&lt;/code&gt;
+
+&lt;pre&gt;&lt;code class="language-javascript"&gt;
+function test() {
+ console.log("Hello");
+}
+&lt;/code&gt;&lt;/pre&gt;</div></div>
+</div></div></div>
+
+<div class="card">
+<div class="card-header"><i class="fas fa-quote-right"></i><h3>Blockquotes</h3></div>
+<div class="card-body">
+<p>Create a quote block.</p>
+<div class="example-container">
+<div class="example"><div class="example-title">Markdown:</div>
+<div class="markdown-input">> This is a quote.
+> 
+> - Author</div></div>
+
+<div class="example"><div class="example-title">HTML Output:</div>
+<div class="html-output">&lt;blockquote&gt;
+&lt;p&gt;This is a quote.&lt;/p&gt;
+&lt;p&gt;- Author&lt;/p&gt;
+&lt;/blockquote&gt;</div></div>
+</div></div></div>
+
+</div><!-- grid -->
+
+<section class="advanced-section">
+<h2><i class="fas fa-cogs"></i> Advanced Features</h2>
+
+<h3>Tables</h3>
+<p>Create tables using vertical bars:</p>
+
+<div class="example-container">
+<div class="example"><div class="example-title">Markdown:</div>
+<div class="markdown-input">| Column 1 | Column 2 | Column 3 |
+|---------|----------|---------|
+| Cell 1 | Cell 2 | Cell 3 |
+| Cell 4 | Cell 5 | Cell 6 |</div></div>
+
+<div class="example"><div class="example-title">HTML Output:</div>
+<div class="html-output">&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;<th>Column 1</th><th>Column 2</th><th>Column 3</th></tr>
+&lt;/thead&gt;
+&lt;tbody&gt;
+<tr><td>Cell 1</td><td>Cell 2</td><td>Cell 3</td></tr>
+<tr><td>Cell 4</td><td>Cell 5</td><td>Cell 6</td></tr>
+&lt;/tbody&gt;
+&lt;/table&gt;</div></div>
+</div>
+
+<h3>Horizontal Line</h3>
+<p>Examples:</p>
+
+<div class="example-container">
+<div class="example"><div class="example-title">Markdown:</div>
+<div class="markdown-input">---
+***
+___</div></div>
+<div class="example"><div class="example-title">HTML Output:</div>
+<div class="html-output">&lt;hr&gt;
+&lt;hr&gt;
+&lt;hr&gt;</div></div>
+</div>
+
+<h3>Reference Links</h3>
+<p>Another way to create links:</p>
+
+<div class="example-container">
+<div class="example"><div class="example-title">Markdown:</div>
+<div class="markdown-input">This is a [link][1] and another [link][2].
+
+[1]: https://example.com
+[2]: https://example.org "Title"</div></div>
+
+<div class="example"><div class="example-title">HTML Output:</div>
+<div class="html-output">This is a &lt;a href="https://example.com"&gt;link&lt;/a&gt; and another &lt;a href="https://example.org" title="Title"&gt;link&lt;/a&gt;.</div></div>
+</div>
+
+</section>
+
+<section class="try-it">
+<h2><i class="fas fa-play-circle"></i> Code Viewer</h2>
+<p>Write Markdown here:</p>
+
+<div class="editor-container">
+<div>
+<h3>Markdown:</h3>
+<textarea id="markdown-input" dir="ltr"># Sample Title
+
+This is a **bold** and *italic* paragraph.
+
+- Item 1
+- Item 2
+- Item 3
+
+[A sample link](https://example.com)</textarea>
+</div>
+
+<div>
+<h3>Show:</h3>
+<div id="preview" class="preview"></div>
+</div>
+</div>
+
+<button class="btn" onclick="updatePreview()">Update Preview</button>
+</section>
+
+<section class="cheatsheet">
+<h2><i class="fas fa-clipboard-list"></i> Markdown Cheatsheet</h2>
+
+<div class="cheatsheet-grid">
+
+<div class="cheat-item"><h4>Headings</h4><p># H1<br>## H2<br>### H3</p></div>
+
+<div class="cheat-item"><h4>Text Formatting</h4><p>**bold**<br>*italic*<br>~~strike~~</p></div>
+
+<div class="cheat-item"><h4>Lists</h4><p>- Unordered<br>1. Ordered</p></div>
+
+<div class="cheat-item"><h4>Links & Images</h4><p>[text](URL)<br>![alt](URL)</p></div>
+
+<div class="cheat-item"><h4>Code</h4><p>`inline`<br>```block```</p></div>
+
+<div class="cheat-item"><h4>Quote</h4><p>> quote</p></div>
+
+<div class="cheat-item"><h4>Tables</h4><p>| col | col |<br>|----|----|<br>| cell | cell |</p></div>
+
+<div class="cheat-item"><h4>Horizontal Line</h4><p>---<br>***<br>___</p></div>
+
+</div></section>
+
+<div class="note">
+<h3><i class="fas fa-lightbulb"></i> Important Note:</h3>
+<p>Markdown may behave differently between platforms such as GitHub, Discord, etc. Always check documentation.</p>
+</div>
+
+</div>
+
+<footer>
+<p>© 2025 - ItsSadegh786MC<br>The Markdown💥</p>
+</footer>
+
+<script>
+marked.setOptions({breaks:true,gfm:true});
+function markdownToHtml(md){ return marked.parse(md);}
+function updatePreview(){
+const input=document.getElementById("markdown-input").value;
+document.getElementById("preview").innerHTML=markdownToHtml(input);
+}
+document.addEventListener("DOMContentLoaded",()=>{
+updatePreview();
+document.getElementById("markdown-input").addEventListener("input",updatePreview);
+});
+</script>
+
+</body>
+</html>
