@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Feedback</title>
+
+    <style>
+        body {
+            font-family: sans-serif;
+            background: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 100%;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+        }
+
+        .form-box {
+            background: white;
+            width: 100%;
+            max-width: 500px;
+            padding: 20px;
+            border-radius: 14px;
+            box-shadow: 0 0 20px #0002;
+        }
+
+        h2 {
+            margin-top: 0;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 14px;
+            margin: 10px 0;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background: #0066ff;
+            color: white;
+            padding: 14px;
+            width: 100%;
+            border: none;
+            border-radius: 10px;
+            font-size: 17px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #004fd1;
+        }
+
+        /* Responsive for mobile */
+        @media (max-width: 450px) {
+            .form-box {
+                padding: 16px;
+                border-radius: 10px;
+            }
+            input, textarea {
+                font-size: 15px;
+                padding: 12px;
+            }
+            button {
+                padding: 12px;
+                font-size: 16px;
+            }
+        }
+
+        /* Captcha style */
+        #captchaBox {
+            background: #eee;
+            padding: 12px;
+            width: 100%;
+            text-align: center;
+            font-size: 22px;
+            letter-spacing: 4px;
+            font-weight: bold;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            user-select: none;
+        }
+
+        #refreshBtn {
+            background: #555;
+            color: white;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+
+        #refreshBtn:hover {
+            background: #333;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <div class="form-box">
+        <h2>Submit Feedback</h2>
+
+        <form id="myForm" action="https://formspree.io/f/xjklyawv" method="POST">
+
+            <input type="text" name="name" placeholder="Your Name" required>
+
+            <textarea name="message" rows="5" placeholder="Your Feedback" required></textarea>
+
+            <!-- Captcha -->
+            <div id="captchaBox"></div>
+            <button type="button" id="refreshBtn" onclick="generateCaptcha()">↻ New Captcha</button>
+
+            <input type="text" id="captchaInput" placeholder="Enter the number above" required>
+
+            <button type="submit">Submit Feedback</button>
+        </form>
+    </div>
+</div>
+
+
+<script>
+    let realCode = "";
+
+    function generateCaptcha() {
+        realCode = Math.floor(10000 + Math.random() * 90000).toString();
+        document.getElementById("captchaBox").textContent = realCode;
+    }
+
+    generateCaptcha();
+
+    document.getElementById("myForm").addEventListener("submit", function (e) {
+        const userInput = document.getElementById("captchaInput").value;
+        if (userInput !== realCode) {
+            e.preventDefault();
+            alert("❌ Incorrect captcha!");
+            generateCaptcha();
+        }
+    });
+</script>
+
+</body>
+</html>
