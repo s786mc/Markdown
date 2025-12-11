@@ -1,1 +1,760 @@
-<h2> Update.... </h1>
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ویرایشگر Markdown</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        :root {
+            --primary-color: #4a6fa5;
+            --secondary-color: #6b8cbc;
+            --dark-color: #2c3e50;
+            --light-color: #f5f7fa;
+            --accent-color: #e74c3c;
+            --success-color: #2ecc71;
+            --border-radius: 8px;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: var(--dark-color);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+        }
+        
+        h1 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-size: 2.5rem;
+        }
+        
+        .subtitle {
+            color: var(--secondary-color);
+            font-size: 1.2rem;
+        }
+        
+        .editor-container {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .panel {
+            flex: 1;
+            min-width: 300px;
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .panel-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .panel-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        
+        .panel-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 6px 12px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.9rem;
+        }
+        
+        .btn:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .panel-content {
+            flex: 1;
+            padding: 0;
+            overflow: auto;
+        }
+        
+        #markdown-input {
+            width: 100%;
+            height: 100%;
+            min-height: 500px;
+            padding: 20px;
+            border: none;
+            resize: none;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            line-height: 1.5;
+            outline: none;
+        }
+        
+        #preview {
+            padding: 20px;
+            height: 100%;
+            min-height: 500px;
+            overflow: auto;
+        }
+        
+        #preview h1, #preview h2, #preview h3 {
+            margin-top: 1.2em;
+            margin-bottom: 0.6em;
+            color: var(--primary-color);
+        }
+        
+        #preview h1 {
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 10px;
+        }
+        
+        #preview h2 {
+            border-bottom: 1px solid var(--secondary-color);
+            padding-bottom: 5px;
+        }
+        
+        #preview blockquote {
+            border-right: 4px solid var(--secondary-color);
+            background-color: rgba(107, 140, 188, 0.1);
+            padding: 10px 20px;
+            margin: 15px 0;
+        }
+        
+        #preview code {
+            background-color: #f1f1f1;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+        }
+        
+        #preview pre {
+            background-color: #2c3e50;
+            color: white;
+            padding: 15px;
+            border-radius: var(--border-radius);
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+        
+        #preview table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        
+        #preview table, #preview th, #preview td {
+            border: 1px solid #ddd;
+        }
+        
+        #preview th, #preview td {
+            padding: 10px;
+            text-align: right;
+        }
+        
+        #preview th {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        #preview tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        #preview img {
+            max-width: 100%;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+        }
+        
+        .share-section {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .share-section h3 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .share-container {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .share-url {
+            flex: 1;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: var(--border-radius);
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            background-color: #f9f9f9;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+        
+        .copy-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            padding: 12px 20px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+        }
+        
+        .copy-btn:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+        
+        .copy-btn.success {
+            background-color: var(--success-color);
+        }
+        
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--success-color);
+            color: white;
+            padding: 12px 24px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            display: none;
+            z-index: 1000;
+            animation: fadeInOut 2s ease;
+        }
+        
+        @keyframes fadeInOut {
+            0% { opacity: 0; bottom: -50px; }
+            10% { opacity: 1; bottom: 20px; }
+            90% { opacity: 1; bottom: 20px; }
+            100% { opacity: 0; bottom: -50px; }
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            color: var(--secondary-color);
+        }
+        
+        @media (max-width: 768px) {
+            .editor-container {
+                flex-direction: column;
+            }
+            
+            .panel {
+                min-width: 100%;
+            }
+            
+            .share-container {
+                flex-direction: column;
+            }
+            
+            .share-url {
+                width: 100%;
+            }
+            
+            .copy-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-markdown"></i> ویرایشگر Markdown</h1>
+            <p class="subtitle">متن Markdown خود را در سمت چپ وارد کنید و پیش‌نمایش آن را در سمت راست مشاهده کنید</p>
+        </header>
+        
+        <div class="share-section">
+            <h3><i class="fas fa-share-alt"></i> اشتراک‌گذاری</h3>
+            <div class="share-container">
+                <div class="share-url" id="share-url"></div>
+                <button class="copy-btn" id="copy-btn">
+                    <i class="far fa-copy"></i> کپی لینک
+                </button>
+            </div>
+        </div>
+        
+        <div class="editor-container">
+            <div class="panel">
+                <div class="panel-header">
+                    <div class="panel-title">ویرایشگر Markdown</div>
+                    <div class="panel-actions">
+                        <button class="btn" id="clear-btn">
+                            <i class="fas fa-broom"></i> پاک‌کردن
+                        </button>
+                        <button class="btn" id="example-btn">
+                            <i class="fas fa-lightbulb"></i> مثال
+                        </button>
+                    </div>
+                </div>
+                <div class="panel-content">
+                    <textarea id="markdown-input" placeholder="متن Markdown خود را اینجا وارد کنید...">
+# عنوان اصلی
+
+## عنوان فرعی
+
+این یک پاراگراف نمونه است. شما می‌توانید متن **پررنگ** یا *مورب* بنویسید.
+
+### لیست‌ها
+
+- آیتم لیست ۱
+- آیتم لیست ۲
+- آیتم لیست ۳
+
+### لیست شماره‌دار
+
+۱. آیتم اول
+۲. آیتم دوم
+۳. آیتم سوم
+
+### نقل‌قول
+
+> این یک نقل‌قول است. می‌توانید از آن برای تاکید بر نکات مهم استفاده کنید.
+
+### کد
+
+کد درون خطی: `console.log('Hello World!')`
+
+### جدول
+
+| ستون ۱ | ستون ۲ | ستون ۳ |
+|--------|--------|--------|
+| داده ۱ | داده ۲ | داده ۳ |
+| داده ۴ | داده ۵ | داده ۶ |
+
+### لینک و تصویر
+
+[لینک به گوگل](https://google.com)
+
+![تصویر نمونه](https://via.placeholder.com/150)
+                    </textarea>
+                </div>
+            </div>
+            
+            <div class="panel">
+                <div class="panel-header">
+                    <div class="panel-title">پیش‌نمایش</div>
+                    <div class="panel-actions">
+                        <button class="btn" id="fullscreen-btn">
+                            <i class="fas fa-expand"></i> تمام‌صفحه
+                        </button>
+                    </div>
+                </div>
+                <div class="panel-content">
+                    <div id="preview"></div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>ویرایشگر Markdown | ایجاد شده با ❤️</p>
+        </footer>
+        
+        <div class="notification" id="notification">
+            <i class="fas fa-check-circle"></i> لینک با موفقیت کپی شد!
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script>
+        // ========== CONFIGURATION ==========
+        marked.setOptions({
+            breaks: true,
+            gfm: true,
+            langPrefix: 'language-'
+        });
+        
+        // ========== DOM ELEMENTS ==========
+        const markdownInput = document.getElementById('markdown-input');
+        const preview = document.getElementById('preview');
+        const clearBtn = document.getElementById('clear-btn');
+        const exampleBtn = document.getElementById('example-btn');
+        const fullscreenBtn = document.getElementById('fullscreen-btn');
+        const shareUrlElement = document.getElementById('share-url');
+        const copyBtn = document.getElementById('copy-btn');
+        const notification = document.getElementById('notification');
+        
+        // ========== URL HANDLING FUNCTIONS ==========
+        
+        /**
+         * Decode markdown from URL parameter
+         * Supports Persian, Arabic, special characters, and emojis
+         */
+        function decodeMarkdownFromURL() {
+            try {
+                const urlParams = new URLSearchParams(window.location.search);
+                const markdownParam = urlParams.get('markdown');
+                
+                if (!markdownParam) return null;
+                
+                // First replace + with space (for backward compatibility)
+                const withSpaces = markdownParam.replace(/\+/g, ' ');
+                
+                // Try to decode, fallback to original if fails
+                try {
+                    return decodeURIComponent(withSpaces);
+                } catch (e) {
+                    console.warn('decodeURIComponent failed, using alternative:', e);
+                    // Alternative decoding for edge cases
+                    return withSpaces
+                        .replace(/%20/g, ' ')
+                        .replace(/%2B/g, '+')
+                        .replace(/%3D/g, '=')
+                        .replace(/%26/g, '&');
+                }
+            } catch (error) {
+                console.error('Error decoding markdown from URL:', error);
+                return null;
+            }
+        }
+        
+        /**
+         * Encode markdown for URL parameter
+         * Properly handles all characters
+         */
+        function encodeMarkdownForURL(markdown) {
+            try {
+                // encodeURIComponent handles all Unicode characters properly
+                const encoded = encodeURIComponent(markdown);
+                // Optional: Keep spaces as %20 (not +) for better compatibility
+                return encoded.replace(/%20/g, '+');
+            } catch (error) {
+                console.error('Error encoding markdown for URL:', error);
+                // Fallback: simple replacement for basic characters
+                return markdown
+                    .replace(/ /g, '+')
+                    .replace(/\n/g, '%0A')
+                    .replace(/=/g, '%3D')
+                    .replace(/&/g, '%26');
+            }
+        }
+        
+        /**
+         * Get the clean base URL (without query parameters)
+         * Works for both v.html and v/index.html scenarios
+         */
+        function getBaseUrl() {
+            const origin = window.location.origin;
+            const pathname = window.location.pathname;
+            
+            // Remove query string and hash from pathname
+            const cleanPath = pathname.split('?')[0].split('#')[0];
+            
+            return origin + cleanPath;
+        }
+        
+        // ========== CORE FUNCTIONS ==========
+        
+        /**
+         * Update the preview panel with rendered markdown
+         */
+        function updatePreview() {
+            try {
+                const markdownText = markdownInput.value;
+                const html = marked.parse(markdownText);
+                preview.innerHTML = html;
+                updateShareUrl();
+            } catch (error) {
+                console.error('Error updating preview:', error);
+                preview.innerHTML = '<div style="color: red; padding: 20px;">خطا در پردازش Markdown</div>';
+            }
+        }
+        
+        /**
+         * Update the share URL display
+         */
+        function updateShareUrl() {
+            const markdownText = markdownInput.value.trim();
+            const baseUrl = getBaseUrl();
+            
+            if (markdownText) {
+                const encodedMarkdown = encodeMarkdownForURL(markdownText);
+                const shareUrl = `${baseUrl}?markdown=${encodedMarkdown}`;
+                shareUrlElement.textContent = shareUrl;
+                shareUrlElement.title = "برای اشتراک‌گذاری این لینک را کپی کنید";
+            } else {
+                shareUrlElement.textContent = baseUrl;
+                shareUrlElement.title = "ویرایشگر Markdown";
+            }
+        }
+        
+        /**
+         * Copy share URL to clipboard
+         */
+        async function copyToClipboard() {
+            const shareUrl = shareUrlElement.textContent;
+            
+            try {
+                // Modern clipboard API
+                await navigator.clipboard.writeText(shareUrl);
+                showNotification('لینک با موفقیت کپی شد!', 'success');
+                
+                // Visual feedback on button
+                copyBtn.classList.add('success');
+                copyBtn.innerHTML = '<i class="fas fa-check"></i> کپی شد!';
+                
+                setTimeout(() => {
+                    copyBtn.classList.remove('success');
+                    copyBtn.innerHTML = '<i class="far fa-copy"></i> کپی لینک';
+                }, 2000);
+                
+            } catch (err) {
+                console.warn('Modern clipboard API failed, trying fallback:', err);
+                
+                // Fallback for older browsers
+                try {
+                    const textArea = document.createElement('textarea');
+                    textArea.value = shareUrl;
+                    textArea.style.position = 'fixed';
+                    textArea.style.opacity = '0';
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    
+                    const successful = document.execCommand('copy');
+                    document.body.removeChild(textArea);
+                    
+                    if (successful) {
+                        showNotification('لینک با موفقیت کپی شد!', 'success');
+                    } else {
+                        showNotification('خطا در کپی کردن لینک', 'error');
+                    }
+                } catch (fallbackErr) {
+                    console.error('Fallback clipboard method failed:', fallbackErr);
+                    showNotification('خطا در کپی کردن لینک', 'error');
+                }
+            }
+        }
+        
+        /**
+         * Show notification message
+         */
+        function showNotification(message, type = 'success') {
+            notification.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i> ${message}`;
+            notification.style.backgroundColor = type === 'success' ? 'var(--success-color)' : 'var(--accent-color)';
+            notification.style.display = 'block';
+            
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 2000);
+        }
+        
+        /**
+         * Check URL parameters on page load
+         */
+        function checkUrlParameters() {
+            const decodedMarkdown = decodeMarkdownFromURL();
+            
+            if (decodedMarkdown) {
+                markdownInput.value = decodedMarkdown;
+                
+                // Optional: Show a small indicator that content was loaded from URL
+                if (!markdownInput.value.includes('✍️')) {
+                    markdownInput.value = `✍️ محتوا از لینک بارگذاری شد!\n\n${decodedMarkdown}`;
+                }
+            }
+        }
+        
+        /**
+         * Update URL in address bar without reloading
+         */
+        function updateBrowserUrl() {
+            const markdownText = markdownInput.value.trim();
+            const baseUrl = getBaseUrl();
+            
+            if (markdownText) {
+                const encodedMarkdown = encodeMarkdownForURL(markdownText);
+                const newUrl = `${baseUrl}?markdown=${encodedMarkdown}`;
+                window.history.replaceState({}, '', newUrl);
+            } else {
+                window.history.replaceState({}, '', baseUrl);
+            }
+        }
+        
+        // ========== EVENT LISTENERS ==========
+        
+        // Update preview as user types (with debounce)
+        let updateTimeout;
+        markdownInput.addEventListener('input', () => {
+            clearTimeout(updateTimeout);
+            updateTimeout = setTimeout(() => {
+                updatePreview();
+                updateBrowserUrl();
+            }, 300);
+        });
+        
+        // Clear editor
+        clearBtn.addEventListener('click', () => {
+            markdownInput.value = '';
+            updatePreview();
+        });
+        
+        // Load example
+        exampleBtn.addEventListener('click', () => {
+            markdownInput.value = `# نمونه Markdown
+
+## ویژگی‌های پشتیبانی شده
+
+### قالب‌بندی متن
+- **پررنگ** و *مورب*
+- ~~خط‌خورده~~
+- ترکیب **پررنگ و *مورب***
+
+### لیست‌ها
+- آیتم اول
+- آیتم دوم
+  - زیر آیتم
+  - زیر آیتم دیگر
+
+1. آیتم شماره‌دار اول
+2. آیتم شماره‌دار دوم
+
+### کد
+کد درون خطی: \`npm install\`
+
+\`\`\`javascript
+// بلوک کد
+function calculate(a, b) {
+    return a + b;
+}
+console.log(calculate(5, 3));
+\`\`\`
+
+### نقل‌قول
+> این یک نقل‌قول زیبا است.
+> می‌توانید چند خط بنویسید.
+
+### جداول
+| نام | سن | شهر |
+|-----|----|------|
+| علی | ۲۵ | تهران |
+| مریم | ۳۰ | اصفهان |
+
+### لینک‌ها و تصاویر
+[GitHub](https://github.com)
+
+![لوگو](https://via.placeholder.com/150x50/4a6fa5/ffffff?text=Markdown)
+
+### کاراکترهای فارسی و خاص
+پاراگراف فارسی با علائم نگارشی: ، ؛ : « »
+همچنین ایموجی: 😊 ✅ 🚀
+
+---
+خط جداکننده
+`;
+
+            updatePreview();
+        });
+        
+        // Fullscreen preview
+        fullscreenBtn.addEventListener('click', () => {
+            if (preview.requestFullscreen) {
+                preview.requestFullscreen();
+            } else if (preview.webkitRequestFullscreen) {
+                preview.webkitRequestFullscreen();
+            } else if (preview.msRequestFullscreen) {
+                preview.msRequestFullscreen();
+            }
+        });
+        
+        // Copy link button
+        copyBtn.addEventListener('click', copyToClipboard);
+        
+        // Click to select share URL
+        shareUrlElement.addEventListener('click', function() {
+            const selection = window.getSelection();
+            const range = document.createRange();
+            range.selectNodeContents(this);
+            selection.removeAllRanges();
+            selection.addRange(range);
+        });
+        
+        // Handle browser back/forward buttons
+        window.addEventListener('popstate', () => {
+            checkUrlParameters();
+            updatePreview();
+        });
+        
+        // ========== INITIALIZATION ==========
+        
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            checkUrlParameters();
+            updatePreview();
+            
+            // Update URL immediately if there's content
+            if (markdownInput.value.trim()) {
+                updateBrowserUrl();
+            }
+        });
+        
+        // Also run initialization for immediate execution
+        setTimeout(() => {
+            checkUrlParameters();
+            updatePreview();
+        }, 0);
+    </script>
+</body>
+</html>
