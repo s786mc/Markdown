@@ -340,7 +340,7 @@
         <div class="editor-container">
             <div class="panel">
                 <div class="panel-header">
-                    <div class="panel-title">ویرایشگر Markdown</div>
+                    <div class="panel-title">Enter</div>
                     <div class="panel-actions">
                         <button class="btn" id="clear-btn">
                             <i class="fas fa-broom"></i> پاک‌کردن
@@ -396,7 +396,7 @@
             
             <div class="panel">
                 <div class="panel-header">
-                    <div class="panel-title">پیش‌نمایش</div>
+                    <div class="panel-title">Markdown</div>
                     <div class="panel-actions">
                         <button class="btn" id="fullscreen-btn">
                             <i class="fas fa-expand"></i> تمام‌صفحه
@@ -410,7 +410,7 @@
         </div>
         
         <footer>
-            <p>ویرایشگر Markdown | ایجاد شده با ❤️</p>
+            <p>ویرایشگر Markdown |</p>
         </footer>
         
         <div class="notification" id="notification">
@@ -612,7 +612,7 @@
                 
                 // Optional: Show a small indicator that content was loaded from URL
                 if (!markdownInput.value.includes('✍️')) {
-                    markdownInput.value = `✍️ محتوا از لینک بارگذاری شد!\n\n${decodedMarkdown}`;
+                    markdownInput.value = `Link loaded:\n\n${decodedMarkdown}`;
                 }
             }
         }
