@@ -1,3 +1,4 @@
+
 #update-div {
 background: linear-gradient(to right, #f52f2f, #eda724);
   padding: 4px;
@@ -14,3 +15,8 @@ background: linear-gradient(to right, #f52f2f, #eda724);
 #update-text { color: withe;
           text-shadow:4px;
              }
+
+
+
+#update-date { color: black;
+display: flex; gap: 37px; }
