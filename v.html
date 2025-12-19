@@ -757,5 +757,23 @@ console.log(calculate(5, 3));
             updatePreview();
         }, 0);
     </script>
+
+
+
+
+
+
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    if (window.location.hash === "#md") {
+      const target = document.getElementById("preview");
+      if (target) {
+        target.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  });
+</script>
 </body>
 </html>
