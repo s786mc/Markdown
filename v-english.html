@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Markdown Editor</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<style>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Markdown Editor</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
         * {
             margin: 0;
             padding: 0;
@@ -157,7 +156,7 @@
         }
         
         #preview blockquote {
-            border-right: 4px solid var(--secondary-color);
+            border-left: 4px solid var(--secondary-color);
             background-color: rgba(107, 140, 188, 0.1);
             padding: 10px 20px;
             margin: 15px 0;
@@ -191,7 +190,7 @@
         
         #preview th, #preview td {
             padding: 10px;
-            text-align: right;
+            text-align: left;
         }
         
         #preview th {
@@ -209,6 +208,85 @@
             box-shadow: var(--shadow);
         }
         
+        .share-section {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .share-section h3 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .share-container {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .share-url {
+            flex: 1;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: var(--border-radius);
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            background-color: #f9f9f9;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+        
+        .copy-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            padding: 12px 20px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+        }
+        
+        .copy-btn:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+        
+        .copy-btn.success {
+            background-color: var(--success-color);
+        }
+        
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--success-color);
+            color: white;
+            padding: 12px 24px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            display: none;
+            z-index: 1000;
+            animation: fadeInOut 2s ease;
+        }
+        
+        @keyframes fadeInOut {
+            0% { opacity: 0; bottom: -50px; }
+            10% { opacity: 1; bottom: 20px; }
+            90% { opacity: 1; bottom: 20px; }
+            100% { opacity: 0; bottom: -50px; }
+        }
+        
         footer {
             text-align: center;
             padding: 20px;
@@ -224,31 +302,57 @@
             }
             
             .panel {
-                min-width: 100%;
+                min-width: 50%;
+            }
+            
+            .share-container {
+                flex-direction: column;
+            }
+            
+            .share-url {
+                width: 100%;
+            }
+            
+            .copy-btn {
+                width: 100%;
+                justify-content: center;
             }
         }
     </style>
+<link href="./files/css/update.css" rel="stylesheet">
 </head>
 <body>
-
-<div class="container">
-<header>
-<h1><i class="fas fa-markdown"></i> Markdown Editor</h1>
-<p class="subtitle">Type your Markdown on the left and see the preview on the right</p>
-</header>
-
-<div class="editor-container">
-
-<div class="panel">
-<div class="panel-header">
-<div class="panel-title">Markdown Editor</div>
-<div class="panel-actions">
-<button class="btn" id="clear-btn"><i class="fas fa-broom"></i> Clear</button>
-<button class="btn" id="example-btn"><i class="fas fa-lightbulb"></i> Example</button>
-</div>
-</div>
-<div class="panel-content">
-<textarea id="markdown-input" placeholder="Enter your Markdown text here...">
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-markdown"></i> Markdown Editor</h1>
+            <p class="subtitle">Enter your Markdown text on the left and see the preview on the right</p>
+        </header>
+        
+        <div class="share-section">
+            <h3><i class="fas fa-share-alt"></i> Share</h3>
+            <div class="share-container">
+                <div class="share-url" id="share-url"></div>
+                <button class="copy-btn" id="copy-btn">
+                    <i class="far fa-copy"></i> Copy Link
+                </button>
+            </div>
+        </div>
+        
+        <div class="editor-container">
+            <div class="panel">
+                <div class="panel-header">
+                    <div class="panel-title">Editor</div>
+                    <div class="panel-actions">
+                        <button class="btn" id="clear-btn">
+                            <i class="fas fa-broom"></i> Clear
+                        </button>
+                        <button class="btn" id="example-btn">
+                            <i class="fas fa-lightbulb"></i> Example
+                        </button>
+                    </div>
+                </div>
+                <div class="panel-content">
+                    <textarea id="markdown-input" placeholder="Enter your Markdown text here...">
 # Main Title
 
 ## Subtitle
@@ -269,7 +373,7 @@ This is a sample paragraph. You can write **bold** or *italic* text.
 
 ### Blockquote
 
-> This is a quote. You can use it to emphasize important points.
+> This is a blockquote. You can use it to emphasize important points.
 
 ### Code
 
@@ -278,120 +382,398 @@ Inline code: `console.log('Hello World!')`
 ### Table
 
 | Column 1 | Column 2 | Column 3 |
-|---------|----------|----------|
-| Data 1 | Data 2 | Data 3 |
-| Data 4 | Data 5 | Data 6 |
+|----------|----------|----------|
+| Data 1   | Data 2   | Data 3   |
+| Data 4   | Data 5   | Data 6   |
 
-### Link & Image
+### Link and Image
 
-[Google Link](https://google.com)
+[Link to Google](https://google.com)
 
 ![Sample Image](https://via.placeholder.com/150)
-</textarea>
-</div>
-</div>
+                    </textarea>
+                </div>
+            </div>
+            
+            <div class="panel">
+                <div class="panel-header">
+                    <div class="panel-title">Preview</div>
+                    <div class="panel-actions">
+                        <button class="btn" id="fullscreen-btn">
+                            <i class="fas fa-expand"></i> Fullscreen
+                        </button>
+                    </div>
+                </div>
+                <div class="panel-content" id="md">
+                    <div id="preview"></div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Markdown Editor | Created with ❤️</p>
+        </footer>
+        
+        <div class="notification" id="notification">
+            <i class="fas fa-check-circle"></i> Link copied successfully!
+        </div>
+    </div>
 
-<div class="panel">
-<div class="panel-header">
-<div class="panel-title">Preview</div>
-<div class="panel-actions">
-<button class="btn" id="fullscreen-btn"><i class="fas fa-expand"></i> Fullscreen</button>
-</div>
-</div>
-<div class="panel-content">
-<div id="preview"></div>
-</div>
-</div>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script>
+        // ========== CONFIGURATION ==========
+        marked.setOptions({
+            breaks: true,
+            gfm: true,
+            langPrefix: 'language-'
+        });
+        
+        // ========== DOM ELEMENTS ==========
+        const markdownInput = document.getElementById('markdown-input');
+        const preview = document.getElementById('preview');
+        const clearBtn = document.getElementById('clear-btn');
+        const exampleBtn = document.getElementById('example-btn');
+        const fullscreenBtn = document.getElementById('fullscreen-btn');
+        const shareUrlElement = document.getElementById('share-url');
+        const copyBtn = document.getElementById('copy-btn');
+        const notification = document.getElementById('notification');
+        
+        // ========== URL HANDLING FUNCTIONS ==========
+        
+        /**
+         * Decode markdown from URL parameter
+         * Supports multilingual text, special characters, and emojis
+         */
+        function decodeMarkdownFromURL() {
+            try {
+                const urlParams = new URLSearchParams(window.location.search);
+                const markdownParam = urlParams.get('markdown');
+                
+                if (!markdownParam) return null;
+                
+                // First replace + with space (for backward compatibility)
+                const withSpaces = markdownParam.replace(/\+/g, ' ');
+                
+                // Try to decode, fallback to original if fails
+                try {
+                    return decodeURIComponent(withSpaces);
+                } catch (e) {
+                    console.warn('decodeURIComponent failed, using alternative:', e);
+                    // Alternative decoding for edge cases
+                    return withSpaces
+                        .replace(/%20/g, ' ')
+                        .replace(/%2B/g, '+')
+                        .replace(/%3D/g, '=')
+                        .replace(/%26/g, '&');
+                }
+            } catch (error) {
+                console.error('Error decoding markdown from URL:', error);
+                return null;
+            }
+        }
+        
+        /**
+         * Encode markdown for URL parameter
+         * Properly handles all characters
+         */
+        function encodeMarkdownForURL(markdown) {
+            try {
+                // encodeURIComponent handles all Unicode characters properly
+                const encoded = encodeURIComponent(markdown);
+                // Optional: Keep spaces as %20 (not +) for better compatibility
+                return encoded.replace(/%20/g, '+');
+            } catch (error) {
+                console.error('Error encoding markdown for URL:', error);
+                // Fallback: simple replacement for basic characters
+                return markdown
+                    .replace(/ /g, '+')
+                    .replace(/\n/g, '%0A')
+                    .replace(/=/g, '%3D')
+                    .replace(/&/g, '%26');
+            }
+        }
+        
+        /**
+         * Get the clean base URL (without query parameters)
+         * Works for both v.html and v/index.html scenarios
+         */
+        function getBaseUrl() {
+            const origin = window.location.origin;
+            const pathname = window.location.pathname;
+            
+            // Remove query string and hash from pathname
+            const cleanPath = pathname.split('?')[0].split('#')[0];
+            
+            return origin + cleanPath;
+        }
+        
+        // ========== CORE FUNCTIONS ==========
+        
+        /**
+         * Update the preview panel with rendered markdown
+         */
+        function updatePreview() {
+            try {
+                const markdownText = markdownInput.value;
+                const html = marked.parse(markdownText);
+                preview.innerHTML = html;
+                updateShareUrl();
+            } catch (error) {
+                console.error('Error updating preview:', error);
+                preview.innerHTML = '<div style="color: red; padding: 20px;">Error processing Markdown</div>';
+            }
+        }
+        
+        /**
+         * Update the share URL display
+         */
+        function updateShareUrl() {
+            const markdownText = markdownInput.value.trim();
+            const baseUrl = getBaseUrl();
+            
+            if (markdownText) {
+                const encodedMarkdown = encodeMarkdownForURL(markdownText);
+                const shareUrl = `${baseUrl}?markdown=${encodedMarkdown}`;
+                shareUrlElement.textContent = shareUrl;
+                shareUrlElement.title = "Copy this link to share";
+            } else {
+                shareUrlElement.textContent = baseUrl;
+                shareUrlElement.title = "Markdown Editor";
+            }
+        }
+        
+        /**
+         * Copy share URL to clipboard
+         */
+        async function copyToClipboard() {
+            const shareUrl = shareUrlElement.textContent;
+            
+            try {
+                // Modern clipboard API
+                await navigator.clipboard.writeText(shareUrl);
+                showNotification('Link copied successfully!', 'success');
+                
+                // Visual feedback on button
+                copyBtn.classList.add('success');
+                copyBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                
+                setTimeout(() => {
+                    copyBtn.classList.remove('success');
+                    copyBtn.innerHTML = '<i class="far fa-copy"></i> Copy Link';
+                }, 2000);
+                
+            } catch (err) {
+                console.warn('Modern clipboard API failed, trying fallback:', err);
+                
+                // Fallback for older browsers
+                try {
+                    const textArea = document.createElement('textarea');
+                    textArea.value = shareUrl;
+                    textArea.style.position = 'fixed';
+                    textArea.style.opacity = '0';
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    
+                    const successful = document.execCommand('copy');
+                    document.body.removeChild(textArea);
+                    
+                    if (successful) {
+                        showNotification('Link copied successfully!', 'success');
+                    } else {
+                        showNotification('Error copying link', 'error');
+                    }
+                } catch (fallbackErr) {
+                    console.error('Fallback clipboard method failed:', fallbackErr);
+                    showNotification('Error copying link', 'error');
+                }
+            }
+        }
+        
+        /**
+         * Show notification message
+         */
+        function showNotification(message, type = 'success') {
+            notification.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i> ${message}`;
+            notification.style.backgroundColor = type === 'success' ? 'var(--success-color)' : 'var(--accent-color)';
+            notification.style.display = 'block';
+            
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 2000);
+        }
+        
+        /**
+         * Check URL parameters on page load
+         */
+        function checkUrlParameters() {
+            const decodedMarkdown = decodeMarkdownFromURL();
+            
+            if (decodedMarkdown) {
+                markdownInput.value = decodedMarkdown;
+                
+                // Optional: Show a small indicator that content was loaded from URL
+                if (!markdownInput.value.includes('✍️')) {
+                    markdownInput.value = `# Content loaded from link\n\n${decodedMarkdown}`;
+                }
+            }
+        }
+        
+        /**
+         * Update URL in address bar without reloading
+         */
+        function updateBrowserUrl() {
+            const markdownText = markdownInput.value.trim();
+            const baseUrl = getBaseUrl();
+            
+            if (markdownText) {
+                const encodedMarkdown = encodeMarkdownForURL(markdownText);
+                const newUrl = `${baseUrl}?markdown=${encodedMarkdown}`;
+                window.history.replaceState({}, '', newUrl);
+            } else {
+                window.history.replaceState({}, '', baseUrl);
+            }
+        }
+        
+        // ========== EVENT LISTENERS ==========
+        
+        // Update preview as user types (with debounce)
+        let updateTimeout;
+        markdownInput.addEventListener('input', () => {
+            clearTimeout(updateTimeout);
+            updateTimeout = setTimeout(() => {
+                updatePreview();
+                updateBrowserUrl();
+            }, 300);
+        });
+        
+        // Clear editor
+        clearBtn.addEventListener('click', () => {
+            markdownInput.value = '';
+            updatePreview();
+        });
+        
+        // Load example
+        exampleBtn.addEventListener('click', () => {
+            markdownInput.value = `# Sample Markdown
 
-</div>
+## Supported Features
 
-<footer>
-<p>Made with ❤️ | Markdown Editor</p>
-</footer>
-
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-<script>
-// marked config
-marked.setOptions({ breaks:true, gfm:true });
-
-// DOM
-const markdownInput=document.getElementById('markdown-input');
-const preview=document.getElementById('preview');
-const clearBtn=document.getElementById('clear-btn');
-const exampleBtn=document.getElementById('example-btn');
-const fullscreenBtn=document.getElementById('fullscreen-btn');
-
-function updatePreview(){
- const md=markdownInput.value;
- preview.innerHTML=marked.parse(md);
-}
-
-markdownInput.addEventListener('input',updatePreview);
-
-clearBtn.addEventListener('click',()=>{
- markdownInput.value='';
- updatePreview();
-});
-
-exampleBtn.addEventListener('click',()=>{
- markdownInput.value=`# Main Title
-
-## Subtitle
-
-This is a sample paragraph. You can write **bold** or *italic* text.
+### Text Formatting
+- **Bold** and *italic*
+- ~~Strikethrough~~
+- Combined **bold and *italic***
 
 ### Lists
+- First item
+- Second item
+  - Sub item
+  - Another sub item
 
-- List item 1
-- List item 2
-- List item 3
-
-### Numbered List
-
-1. First item
-2. Second item
-3. Third item
-
-### Blockquote
-
-> This is a quote. You can use it to emphasize important points.
+1. First numbered item
+2. Second numbered item
 
 ### Code
+Inline code: \`npm install\`
 
-Inline code: \`console.log('Hello World!')\`
-
-\`\`\`
+\`\`\`javascript
 // Code block
-function greet(name){
- return \`Hello, \${name}!\`;
+function calculate(a, b) {
+    return a + b;
 }
+console.log(calculate(5, 3));
 \`\`\`
 
-### Table
+### Blockquote
+> This is a beautiful blockquote.
+> You can write multiple lines.
 
-| Column 1 | Column 2 | Column 3 |
-|---------|----------|----------|
-| Data 1 | Data 2 | Data 3 |
-| Data 4 | Data 5 | Data 6 |
+### Tables
+| Name | Age | City |
+|------|-----|------|
+| Ali  | 25  | Tehran |
+| Maryam | 30 | Isfahan |
 
-### Link & Image
+### Links and Images
+[GitHub](https://github.com)
 
-[Google Link](https://google.com)
+![Logo](https://via.placeholder.com/150x50/4a6fa5/ffffff?text=Markdown)
 
-![Sample Image](https://via.placeholder.com/150)`;
- updatePreview();
-});
+### Special Characters and Emojis
+Multilingual text with punctuation: ، ؛ : « »
+Also emojis: 😊 ✅ 🚀
 
-fullscreenBtn.addEventListener('click',()=>{
- if(preview.requestFullscreen) preview.requestFullscreen();
- else if(preview.webkitRequestFullscreen) preview.webkitRequestFullscreen();
- else if(preview.msRequestFullscreen) preview.msRequestFullscreen();
-});
+---
+Horizontal line
+`;
 
-updatePreview();
+            updatePreview();
+        });
+        
+        // Fullscreen preview
+        fullscreenBtn.addEventListener('click', () => {
+            if (preview.requestFullscreen) {
+                preview.requestFullscreen();
+            } else if (preview.webkitRequestFullscreen) {
+                preview.webkitRequestFullscreen();
+            } else if (preview.msRequestFullscreen) {
+                preview.msRequestFullscreen();
+            }
+        });
+        
+        // Copy link button
+        copyBtn.addEventListener('click', copyToClipboard);
+        
+        // Click to select share URL
+        shareUrlElement.addEventListener('click', function() {
+            const selection = window.getSelection();
+            const range = document.createRange();
+            range.selectNodeContents(this);
+            selection.removeAllRanges();
+            selection.addRange(range);
+        });
+        
+        // Handle browser back/forward buttons
+        window.addEventListener('popstate', () => {
+            checkUrlParameters();
+            updatePreview();
+        });
+        
+        // ========== INITIALIZATION ==========
+        
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            checkUrlParameters();
+            updatePreview();
+            
+            // Update URL immediately if there's content
+            if (markdownInput.value.trim()) {
+                updateBrowserUrl();
+            }
+        });
+        
+        // Also run initialization for immediate execution
+        setTimeout(() => {
+            checkUrlParameters();
+            updatePreview();
+        }, 0);
+    </script>
+
+
+
+
+
+
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    if (window.location.hash === "#md") {
+      const target = document.getElementById("preview");
+      if (target) {
+        target.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  });
 </script>
-
 </body>
 </html>
