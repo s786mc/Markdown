@@ -761,25 +761,8 @@ console.log(calculate(5, 3));
         setTimeout(() => {
             checkUrlParameters();
             updatePreview();
-        }, 0);
-    </script>
-
-
-
-
-
-
-
-
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    if (window.location.hash === "#md") {
-      const target = document.getElementById("preview");
-      if (target) {
-        target.scrollIntoView({ behavior: "smooth" });
-      }
-    }
-  });
+        }, 0)
+</script> <script>
 // ========== SCROLL TO EDITOR IF #go IN URL ==========
 document.addEventListener("DOMContentLoaded", () => {
     if (window.location.hash === "#go") {
@@ -792,6 +775,16 @@ document.addEventListener("DOMContentLoaded", () => {
                 });
                 editor.focus(); // اگه می‌خوای فوکوس هم بشه
             }, 500); // یه کمی تأخیر تا صفحه کامل لود بشه
+        }
+    }
+});
+// Handle hash changes after page load
+window.addEventListener('hashchange', () => {
+    if (window.location.hash === "#go") {
+        const editor = document.getElementById("markdown-input");
+        if (editor) {
+            editor.scrollIntoView({ behavior: "smooth", block: "center" });
+            editor.focus();
         }
     }
 });
