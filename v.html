@@ -780,6 +780,21 @@ console.log(calculate(5, 3));
       }
     }
   });
+// ========== SCROLL TO EDITOR IF #go IN URL ==========
+document.addEventListener("DOMContentLoaded", () => {
+    if (window.location.hash === "#go") {
+        const editor = document.getElementById("markdown-input");
+        if (editor) {
+            setTimeout(() => {
+                editor.scrollIntoView({ 
+                    behavior: "smooth", 
+                    block: "center" 
+                });
+                editor.focus(); // اگه می‌خوای فوکوس هم بشه
+            }, 500); // یه کمی تأخیر تا صفحه کامل لود بشه
+        }
+    }
+});
 </script>
 </body>
 </html>
