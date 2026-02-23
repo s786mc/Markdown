@@ -4,7 +4,7 @@
 
 // ==== CONFIG: REGISTER YOUR STICKERS HERE ====
 const MDE_STICKERS = {
-    "IranFlag":"./stickers/IranFlag.png"
+    "IranFlag":"./files/stickers/IranFlag.png"
 };
 
 // Sticker size (emoji-like)
