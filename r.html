@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Markdown View</title>
+
+<link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family: Vazirmatn, sans-serif;
+}
+
+body{
+    background: linear-gradient(135deg,#f5f7fa,#c3cfe2);
+    padding:20px;
+    min-height:100vh;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+}
+
+.preview-box{
+    background:white;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 4px 6px rgba(0,0,0,0.1);
+    margin-bottom:25px;
+}
+
+#preview h1,
+#preview h2,
+#preview h3{
+    color:#4a6fa5;
+    margin:15px 0;
+}
+
+#preview pre{
+    background:#2c3e50;
+    color:white;
+    padding:15px;
+    border-radius:8px;
+    overflow-x:auto;
+}
+
+#preview blockquote{
+    border-right:4px solid #6b8cbc;
+    background:rgba(107,140,188,0.1);
+    padding:10px 20px;
+    margin:15px 0;
+}
+
+.share-section{
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 4px 6px rgba(0,0,0,0.1);
+}
+
+.share-url{
+    background:#f9f9f9;
+    padding:12px;
+    border-radius:6px;
+    font-family: monospace;
+    overflow-x:auto;
+    margin-bottom:15px;
+}
+
+.copy-btn{
+    background:#4a6fa5;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:6px;
+    cursor:pointer;
+    width:100%;
+}
+
+.copy-btn:hover{
+    background:#6b8cbc;
+}
+
+.notification{
+    position:fixed;
+    bottom:20px;
+    left:50%;
+    transform:translateX(-50%);
+    background:#2ecc71;
+    color:white;
+    padding:12px 24px;
+    border-radius:8px;
+    display:none;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="preview-box">
+<div id="preview"></div>
+</div>
+
+<div class="share-section">
+<h3>اشتراک‌گذاری کامل</h3>
+
+<div class="share-url" id="share-url-full"></div>
+
+<button class="copy-btn" id="copy-btn-full">
+کپی لینک
+</button>
+
+</div>
+
+</div>
+
+<div class="notification" id="notification"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+<script>
+
+marked.setOptions({
+    breaks:true,
+    gfm:true
+});
+
+const preview = document.getElementById("preview");
+const shareUrlFullElement = document.getElementById("share-url-full");
+const copyBtnFull = document.getElementById("copy-btn-full");
+const notification = document.getElementById("notification");
+
+
+// ===== Decode URL Markdown =====
+function decodeMarkdownFromURL(){
+
+    const params = new URLSearchParams(window.location.search);
+    const markdownParam = params.get("markdown");
+
+    if(!markdownParam) return "";
+
+    try{
+        return decodeURIComponent(markdownParam.replace(/\+/g," "));
+    }catch{
+        return markdownParam;
+    }
+}
+
+
+// ===== Update Preview =====
+function updatePreview(){
+
+    const markdownText = decodeMarkdownFromURL();
+
+    preview.innerHTML = markdownText
+        ? marked.parse(markdownText)
+        : "<p>متنی وجود ندارد</p>";
+
+    updateShare();
+}
+
+
+// ===== Update Share Link =====
+function updateShare(){
+
+    const markdownText = decodeMarkdownFromURL();
+    const encoded = encodeURIComponent(markdownText || "");
+
+    shareUrlFullElement.textContent =
+        `https://s786mc.github.io/Markdown/r?markdown=${encoded}`;
+}
+
+
+// ===== Copy Link =====
+copyBtnFull.addEventListener("click", async ()=>{
+
+    try{
+        await navigator.clipboard.writeText(
+            shareUrlFullElement.textContent
+        );
+
+        showNotification("لینک کپی شد!");
+
+    }catch{
+        showNotification("خطا در کپی لینک");
+    }
+
+});
+
+
+// ===== Notification =====
+function showNotification(msg){
+
+    notification.textContent = msg;
+    notification.style.display = "block";
+
+    setTimeout(()=>{
+        notification.style.display = "none";
+    },2000);
+}
+
+
+// ===== Init =====
+document.addEventListener("DOMContentLoaded", ()=>{
+    updatePreview();
+});
+
+</script>
+
+</body>
+</html>
