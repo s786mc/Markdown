@@ -1,107 +1,90 @@
 // ===============================
-// MDE Sticker Engine
+// Sticker Registry
 // ===============================
 
-// ==== CONFIG: REGISTER YOUR STICKERS HERE ====
 const MDE_STICKERS = {
     "IranFlag":"./files/stickers/IranFlag.png"
-};
-
-// Sticker size (emoji-like)
-const STICKER_SIZE = 22;
+}
 
 
 // ===============================
-// Convert Sticker Codes
+// Elements
 // ===============================
 
-function replaceStickers(rawText) {
+const textarea = document.getElementById("Enter");
+const preview = document.getElementById("Preview");
 
-    if (!rawText) return rawText;
 
-    // stickerID
-    rawText = rawText.replace(
-        /!mdeS\(stickerID=([^)]+)\)!/g,
-        function (match, stickerID) {
+// ===============================
+// Sticker Engine
+// ===============================
 
-            stickerID = stickerID.trim();
+function replaceStickers(text) {
+
+    // stickerID mode
+    text = text.replace(
+        /!mdeS\(stickerID=(.*?)\)!/g,
+        (match, stickerID) => {
 
             const imgSrc = MDE_STICKERS[stickerID];
 
-            if (!imgSrc) return match; // اگر ثبت نشده همون متن بمونه
+            if (!imgSrc) return ""; // اگر وجود نداشت حذف کن
 
             return `<img 
                 src="${imgSrc}" 
                 class="mde-sticker"
                 alt="${stickerID}"
-                style="
-                    width:${STICKER_SIZE}px;
-                    height:${STICKER_SIZE}px;
-                    object-fit:contain;
-                    vertical-align:middle;
-                    display:inline-block;
-                "
+                onerror="this.remove()"
             />`;
         }
     );
 
-    // stickerURL
-    rawText = rawText.replace(
-        /!mdeS\(stickerURL=([^)]+)\)!/g,
-        function (match, stickerURL) {
 
-            stickerURL = stickerURL.trim();
+    // stickerURL mode
+    text = text.replace(
+        /!mdeS\(stickerURL=(.*?)\)!/g,
+        (match, stickerURL) => {
+
+            if (!stickerURL.startsWith("http")) return "";
 
             return `<img 
                 src="${stickerURL}" 
                 class="mde-sticker"
                 alt="sticker"
-                style="
-                    width:${STICKER_SIZE}px;
-                    height:${STICKER_SIZE}px;
-                    object-fit:contain;
-                    vertical-align:middle;
-                    display:inline-block;
-                "
+                onerror="this.remove()"
             />`;
         }
     );
 
-    return rawText;
+    return text;
 }
 
 
 // ===============================
-// Hook Into Your Editor
+// Render Engine
 // ===============================
 
-document.addEventListener("DOMContentLoaded", () => {
+function updatePreview() {
 
-    if (typeof updatePreview === "function") {
+    if (!textarea || !preview) return;
 
-        const originalUpdatePreview = updatePreview;
+    let markdownText = textarea.value;
 
-        window.updatePreview = function () {
+    markdownText = replaceStickers(markdownText);
 
-            try {
-                const markdownInput = document.getElementById('markdown-input');
-                const preview = document.getElementById('preview');
+    const html = marked.parse(markdownText);
 
-                let markdownText = markdownInput.value;
+    preview.innerHTML = html;
+}
 
-                // 🔥 Replace sticker codes BEFORE marked parses it
-                markdownText = replaceStickers(markdownText);
 
-                const html = marked.parse(markdownText);
-                preview.innerHTML = html;
+// ===============================
+// Events
+// ===============================
 
-                if (typeof updateShareUrl === "function") {
-                    updateShareUrl();
-                }
+if (textarea) {
+    textarea.addEventListener("input", updatePreview);
+}
 
-            } catch (error) {
-                console.error("Sticker Engine Error:", error);
-            }
-        };
-    }
-});
+// رندر اولیه هنگام لود صفحه
+document.addEventListener("DOMContentLoaded", updatePreview);
