@@ -98,7 +98,87 @@ body{
     border-radius:8px;
     display:none;
 }
+/* ===== Preview Content Professional Styling ===== */
 
+#preview {
+    font-size: 16px;
+    line-height: 1.7;
+}
+
+/* Images */
+#preview img{
+    max-width:100%;
+    height:auto;
+    display:block;
+    margin:15px auto;
+    border-radius:12px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.1);
+}
+
+/* Videos / Embedded Media */
+#preview iframe,
+#preview video{
+    width:100%;
+    height:auto;
+    border-radius:12px;
+    margin:15px 0;
+}
+
+/* Tables */
+#preview table{
+    width:100%;
+    display:block;
+    overflow-x:auto;
+    border-collapse:collapse;
+    margin:20px 0;
+}
+
+#preview th,
+#preview td{
+    padding:12px;
+    border:1px solid #ddd;
+}
+
+/* Code blocks */
+#preview pre{
+    background:#1e293b;
+    color:white;
+    padding:18px;
+    border-radius:12px;
+    overflow-x:auto;
+    margin:20px 0;
+}
+
+#preview code{
+    background:#f1f5f9;
+    padding:3px 6px;
+    border-radius:6px;
+    font-family: monospace;
+}
+
+/* Blockquote */
+#preview blockquote:hover {
+    border-right:5px solid #4a6fa5;
+    background:rgba(74,111,165,0.08);
+
+
+/* Lists */
+#preview ul,
+#preview ol{
+    padding-right:25px;
+    margin:15px 0;
+}
+
+/* Links */
+#preview a{
+    color:#4a6fa5;
+    text-decoration:none;
+    font-weight:600;
+}
+
+#preview a:hover{
+    text-decoration:underline;
+}
 </style>
 
 </head>
@@ -164,7 +244,7 @@ function updatePreview(){
 
     preview.innerHTML = markdownText
         ? marked.parse(markdownText)
-        : "<p>متنی وجود ندارد</p>";
+        : "<p>هیچ متن، عکس،ویدیو و.. دیگر اینجا نیست!</p>";
 
     updateShare();
 }
