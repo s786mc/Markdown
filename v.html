@@ -343,7 +343,15 @@ font-style: normal; }
                 </button>
             </div>
         </div>
-        
+        <div class="share-section">
+    <h3><i class="fas fa-link"></i> اشتراک‌گذاری کامل</h3>
+    <div class="share-container">
+        <div class="share-url" id="share-url-full"></div>
+        <button class="copy-btn" id="copy-btn-full">
+            <i class="far fa-copy"></i> کپی لینک
+        </button>
+    </div>
+</div>
         <div class="editor-container">
             <div class="panel">
                 <div class="panel-header">
@@ -790,6 +798,68 @@ window.addEventListener('hashchange', () => {
 });
 </script>
 <script src="./files/I.js"></script>
+<script>
+// ===== DOM Elements =====
+const shareUrlFullElement = document.getElementById("share-url-full");
+const copyBtnFull = document.getElementById("copy-btn-full");
+
+
+// ===== Update Full Share URL =====
+function updateFullShareUrl() {
+
+    if (!shareUrlFullElement) return;
+
+    const markdownText = markdownInput.value.trim();
+
+    if (markdownText) {
+
+        const encodedMarkdown = encodeMarkdownForURL(markdownText);
+
+        shareUrlFullElement.textContent =
+            `https://s786mc.github.io/Markdown/r?markdown=${encodedMarkdown}`;
+
+    } else {
+
+        shareUrlFullElement.textContent =
+            "https://s786mc.github.io/Markdown/r";
+    }
+}
+
+
+// ===== Copy Full Share Link =====
+if (copyBtnFull) {
+
+    copyBtnFull.addEventListener("click", async () => {
+
+        try {
+            await navigator.clipboard.writeText(shareUrlFullElement.textContent);
+            showNotification("لینک کامل کپی شد!", "success");
+
+        } catch {
+            showNotification("خطا در کپی لینک", "error");
+        }
+
+    });
+}
+
+
+// ===== Hook Into Preview Update =====
+const originalUpdateShareUrl = updateShareUrl;
+
+updateShareUrl = function () {
+
+    originalUpdateShareUrl();
+
+    updateFullShareUrl();
+};
+
+
+// ===== Initial Load =====
+document.addEventListener("DOMContentLoaded", () => {
+    updateFullShareUrl();
+});
+
+</script>
 </body>
 
 
